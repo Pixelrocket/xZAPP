@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZAPP.iOS", "xZAPP.iOS\xZAPP.iOS.csproj", "{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZAPP.Core", "xZAPP.Core\xZAPP.Core.csproj", "{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Debug|iPhone.Build.0 = Debug|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Release|iPhone.ActiveCfg = Release|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Release|iPhone.Build.0 = Release|iPhone
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{BFC0F2F1-4221-4C9F-9BEF-466AFF3FCC19}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Release|iPhone.Build.0 = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{E5EDCCA2-887F-4C46-A926-AF1B0E1B0901}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = xZAPP.iOS\xZAPP.iOS.csproj
+	EndGlobalSection
+EndGlobal
