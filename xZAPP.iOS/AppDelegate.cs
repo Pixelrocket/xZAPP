@@ -40,8 +40,8 @@ namespace xZAPP.iOS
             }
 
 
-            Client cl = new Client();
-            List<Client> cls = cl.GetClients();
+            //Client cl = new Client();
+            //List<Client> cls = cl.GetClients();
            
 
             return true;

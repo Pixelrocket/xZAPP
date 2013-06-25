@@ -3,23 +3,24 @@ using System.Drawing;
 using System.Collections.Generic;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using xZAPP.Core;
 
 namespace xZAPP.iOS
 {
     public partial class ClientDetailViewController : UIViewController
     {
         UIPopoverController masterPopoverController;
-        object detailItem;
+        Client client;
 
         public ClientDetailViewController(IntPtr handle) : base (handle)
         {
         }
 
-        public void SetDetailItem(object newDetailItem)
+        public void SetClient(object cl)
         {
-            if (detailItem != newDetailItem)
+            if (client != cl)
             {
-                detailItem = newDetailItem;
+                client = cl;
 				
                 // Update the view
                 ConfigureView();
@@ -31,9 +32,15 @@ namespace xZAPP.iOS
 
         void ConfigureView()
         {
+
             // Update the user interface for the detail item
-            if (IsViewLoaded && detailItem != null)
-                detailDescriptionLabel.Text = detailItem.ToString();
+            if (IsViewLoaded && client != null)
+            {
+                this.Title = client.clientNameFormal;
+                detailDescriptionLabel.Text = client.clientNameInformal;
+
+                // TODO Create a UITableView with the dagrapportage for selected client
+            }
         }
 
         public override void DidReceiveMemoryWarning()

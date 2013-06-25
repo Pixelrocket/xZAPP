@@ -56,7 +56,7 @@
                             <outlet property="delegate" destination="12" id="7aM-Pb-dsE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="35"/>
+                    <navigationItem key="navigationItem" title="Clienten" id="35"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17" sceneMemberID="firstResponder"/>
             </objects>
@@ -81,7 +81,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Detail" id="26"/>
+                    <navigationItem key="navigationItem" title="ClientNaam" id="26"/>
                     <connections>
                         <outlet property="detailDescriptionLabel" destination="27" id="28"/>
                     </connections>
