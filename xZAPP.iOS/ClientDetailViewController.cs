@@ -16,7 +16,7 @@ namespace xZAPP.iOS
         {
         }
 
-        public void SetClient(object cl)
+        public void SetClient(Client cl)
         {
             if (client != cl)
             {

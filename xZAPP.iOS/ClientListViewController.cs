@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using xZAPP.Core;
+using System.Threading.Tasks;
 
 namespace xZAPP.iOS
 {
@@ -49,11 +50,16 @@ namespace xZAPP.iOS
             //NavigationItem.RightBarButtonItem = addButton;
 
             Client cl = new Client();
-            List<Client> cls = cl.GetClients();
 
-            TableView.Source = dataSource = new DataSource(cls);
+            // Call GetClientsAsync and set result as datasource, TaskScheduler must be used to update UI
+            cl.GetClientsAsync().ContinueWith(t => {
+                TableView.Source = dataSource = new DataSource(t.Result);
+                TableView.ReloadData();
+            },TaskScheduler.FromCurrentSynchronizationContext ());
+
 
         }
+
 
         class DataSource : UITableViewSource
         {
@@ -105,7 +111,7 @@ namespace xZAPP.iOS
                 var indexPath = TableView.IndexPathForSelectedRow;
                 var item = dataSource.Clients[indexPath.Row];
 
-                ((ClientDetailViewController)segue.DestinationViewController).SetClientitem);
+                ((ClientDetailViewController)segue.DestinationViewController).SetClient(item);
             }
         }
     }

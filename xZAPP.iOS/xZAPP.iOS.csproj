@@ -83,6 +83,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -107,6 +108,9 @@
     </Compile>
     <Compile Include="..\xZAPP.Core\Core\ClientProxy.cs">
       <Link>Core\ClientProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\xZAPP.Core\Core\IClient.cs">
+      <Link>Core\IClient.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
