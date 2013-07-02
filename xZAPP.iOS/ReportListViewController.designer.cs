@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace xZAPP.iOS
 {
-	[Register ("ClientListViewController")]
-	partial class ClientListViewController
+	[Register ("ReportListViewController")]
+	partial class ReportListViewController
 	{
 		
 		void ReleaseDesignerOutlets ()

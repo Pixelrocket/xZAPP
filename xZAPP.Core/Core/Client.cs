@@ -18,22 +18,22 @@ namespace xZAPP.Core
 
         }
 
-        public List<Client> GetClients()
+        public List<Client> GetClients(string token)
         {
-            ClientProxy clProxy = new ClientProxy();
-            List<Client> clients =  JsonConvert.DeserializeObject<List<Client>>(clProxy.GetJSON());
+            ZillizProxy clProxy = new ZillizProxy();
+            List<Client> clients =  JsonConvert.DeserializeObject<List<Client>>(clProxy.GetJSON(ZillizProxy.ServiceURL.Clients, token:token));
 
             return clients;
         }
 
         // Async version of GetClients
-        public async Task<List<Client>> GetClientsAsync()
+        public async Task<List<Client>> GetClientsAsync(string token)
         {
             List<Client> clients = null;
-            ClientProxy clProxy = new ClientProxy();          
+            ZillizProxy clProxy = new ZillizProxy();          
 
             // Call async proxy and use returned JSON string
-            string jsonClients = await clProxy.GetJSONAsync();
+            string jsonClients = await clProxy.GetJSONAsync(ZillizProxy.ServiceURL.Clients, token:token);
             clients = JsonConvert.DeserializeObject<List<Client>>(jsonClients);
 
             return clients;

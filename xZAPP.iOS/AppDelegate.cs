@@ -24,25 +24,31 @@ namespace xZAPP.iOS
             // Override point for customization after application launch.
             if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
             {
-                var splitViewController = (UISplitViewController)Window.RootViewController;
+                //var splitViewController = (UISplitViewController)Window.RootViewController;
 
                 // Get the UINavigationControllers containing our master & detail view controllers
-                var masterNavigationController = (UINavigationController)splitViewController.ViewControllers[0];
-                var detailNavigationController = (UINavigationController)splitViewController.ViewControllers[1];
+                //var masterNavigationController = (UINavigationController)splitViewController.ViewControllers[0];
+                //var detailNavigationController = (UINavigationController)splitViewController.ViewControllers[1];
 
-                var masterViewController = (ClientListViewController)masterNavigationController.TopViewController;
-                var detailViewController = (ClientDetailViewController)detailNavigationController.TopViewController;
+                //var masterViewController = (ClientListViewController)masterNavigationController.TopViewController;
+                //var detailViewController = (ClientDetailViewController)detailNavigationController.TopViewController;
 
-                masterViewController.DetailViewController = detailViewController;
+                //masterViewController.DetailViewController = detailViewController;
 
                 // Set the DetailViewController as the UISplitViewController Delegate.
-                splitViewController.WeakDelegate = detailViewController;
+                //splitViewController.WeakDelegate = detailViewController;
             }
 
-
+          
             //Client cl = new Client();
             //List<Client> cls = cl.GetClients();
+
+            //Credentials cr = new Credentials();
+            //Credentials myCreds = cr.CheckCredentials("averschuur", "huurcave-4711");
            
+            //cr.CheckCredentialsAsync("averschuur", "huurcave-4711").ContinueWith(t => {
+
+            //});
 
             return true;
         }

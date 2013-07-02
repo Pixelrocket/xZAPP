@@ -30,12 +30,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Client.cs" />
-    <Compile Include="Core\ClientProxy.cs" />
     <Compile Include="Core\IClient.cs" />
+    <Compile Include="Core\ZillizProxy.cs" />
+    <Compile Include="Core\EnumExtensions.cs" />
+    <Compile Include="Core\ICredentials.cs" />
+    <Compile Include="Core\Credentials.cs" />
+    <Compile Include="Core\ApplicationData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

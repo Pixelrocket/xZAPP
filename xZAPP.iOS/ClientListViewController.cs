@@ -14,22 +14,12 @@ namespace xZAPP.iOS
 
         public ClientListViewController(IntPtr handle) : base (handle)
         {
-            Title = NSBundle.MainBundle.LocalizedString("Cliënten", "Cliënten");
-			
-            if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
-            {
-                ContentSizeForViewInPopover = new SizeF(320f, 600f);
-                ClearsSelectionOnViewWillAppear = false;
-            }
-			
+            Title = NSBundle.MainBundle.LocalizedString("Cliënten", "Cliënten");			
             // Custom initialization
         }
 
-        public ClientDetailViewController DetailViewController
-        {
-            get;
-            set;
-        }
+        public ReportListViewController ViewController{ get; set;}
+        public string Token{ get; set;}      
 
         public override void DidReceiveMemoryWarning()
         {
@@ -46,20 +36,25 @@ namespace xZAPP.iOS
             // Perform any additional setup after loading the view, typically from a nib.
             //NavigationItem.LeftBarButtonItem = EditButtonItem;
 
-            //var addButton = new UIBarButtonItem(UIBarButtonSystemItem.Add, AddNewItem);
-            //NavigationItem.RightBarButtonItem = addButton;
+            var addButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
+            NavigationItem.RightBarButtonItem = addButton;
+
+            //this.NavigationController.NavigationBar.Items[0].Title = "Logout"; //new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, null);
+            this.NavigationItem.HidesBackButton = true;
 
             Client cl = new Client();
 
             // Call GetClientsAsync and set result as datasource, TaskScheduler must be used to update UI
-            cl.GetClientsAsync().ContinueWith(t => {
+            cl.GetClientsAsync(Token).ContinueWith(t => {
                 TableView.Source = dataSource = new DataSource(t.Result);
                 TableView.ReloadData();
             },TaskScheduler.FromCurrentSynchronizationContext ());
-
-
         }
 
+        public void SetToken(string token)
+        {
+            Token = token;
+        }   
 
         class DataSource : UITableViewSource
         {
@@ -85,8 +80,8 @@ namespace xZAPP.iOS
             }
 
             public override int RowsInSection(UITableView tableview, int section)
-            {
-                return clients.Count;
+            {               
+                return clients == null ? 0 : clients.Count;
             }
 
             // Customize the appearance of table view cells.
@@ -106,13 +101,18 @@ namespace xZAPP.iOS
 
         public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
         {
-            if (segue.Identifier == "showDetail")
+            if (segue.Identifier == "showReports")
             {
                 var indexPath = TableView.IndexPathForSelectedRow;
                 var item = dataSource.Clients[indexPath.Row];
 
-                ((ClientDetailViewController)segue.DestinationViewController).SetClient(item);
+                ((ReportListViewController)segue.DestinationViewController).SetClient(item);
             }
+        }
+
+        private void Logout(object sender, EventArgs args)
+        {       
+            this.PerformSegue("logoutFromClients", this);
         }
     }
 }

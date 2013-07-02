@@ -6,8 +6,8 @@ namespace xZAPP.Core
 {
     public interface IClient
     {
-        List<Client> GetClients();
-        Task<List<Client>> GetClientsAsync();
+        List<Client> GetClients(string token);
+        Task<List<Client>> GetClientsAsync(string token);
     }
 }
 
