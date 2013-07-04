@@ -41,6 +41,8 @@
     <Compile Include="Core\ICredentials.cs" />
     <Compile Include="Core\Credentials.cs" />
     <Compile Include="Core\ApplicationData.cs" />
+    <Compile Include="Core\IDailyReport.cs" />
+    <Compile Include="Core\DailyReport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

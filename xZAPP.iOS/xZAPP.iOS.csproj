@@ -132,6 +132,12 @@
     <Compile Include="..\xZAPP.Core\Core\ApplicationData.cs">
       <Link>Core\ApplicationData.cs</Link>
     </Compile>
+    <Compile Include="..\xZAPP.Core\Core\DailyReport.cs">
+      <Link>Core\DailyReport.cs</Link>
+    </Compile>
+    <Compile Include="..\xZAPP.Core\Core\IDailyReport.cs">
+      <Link>Core\IDailyReport.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainStoryboard_iPhone.storyboard" />

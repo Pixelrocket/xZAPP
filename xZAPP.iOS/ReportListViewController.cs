@@ -5,12 +5,17 @@ using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using xZAPP.Core;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace xZAPP.iOS
 {
 	public partial class ReportListViewController : UITableViewController
 	{
+        DataSource dataSource;
+
         Client client;
+        public string Token{ get; set;}   
 
 		public ReportListViewController (IntPtr handle) : base (handle)
 		{
@@ -29,8 +34,8 @@ namespace xZAPP.iOS
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
-            var addButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
-            NavigationItem.RightBarButtonItem = addButton;
+            var logoutButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
+            NavigationItem.RightBarButtonItem = logoutButton;
 
 
             ConfigureView();
@@ -53,9 +58,73 @@ namespace xZAPP.iOS
             // Update the user interface for the detail item
             if (IsViewLoaded && client != null)
             {
-                this.Title = client.clientNameFormal;
+                this.Title = client.FormalName;
 
-                // TODO Create a UITableView with the dagrapportage for selected client
+                DailyReport rep = new DailyReport();
+
+                // Call GetClientsAsync and set result as datasource, TaskScheduler must be used to update UI
+                rep.GetDailyReportsAsync(ApplicationData.GetInstance.Token, client.ClientId).ContinueWith(t => {
+                    ReportList.Source = dataSource = new DataSource(t.Result);
+                    ReportList.ReloadData();
+                },TaskScheduler.FromCurrentSynchronizationContext ());
+            }
+        }
+
+        class DataSource : UITableViewSource
+        {
+            static readonly NSString CellIdentifier = new NSString("DataSourceCell");
+            List<DailyReport> reports = new List<DailyReport>();
+
+            public DataSource(List<DailyReport> reps)
+            {
+                reports = reps;
+            }
+
+            public IList<DailyReport> DailyReports
+            {
+                get 
+                {
+                    return reports;
+                }
+            }
+            // Customize the number of sections in the table view.
+            public override int NumberOfSections(UITableView tableView)
+            {
+                return 1;DataSource dataSource;
+            }
+
+            public override int RowsInSection(UITableView tableview, int section)
+            {               
+                return reports == null ? 0 : reports.Count;
+            }
+
+            // Customize the appearance of table view cells.
+            public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
+            {
+                var cell = (UITableViewCell)tableView.DequeueReusableCell(CellIdentifier, indexPath);
+
+                cell.TextLabel.Text = reports[indexPath.Row].Subject;
+                cell.DetailTextLabel.Text = reports[indexPath.Row].Date + " - " + reports[indexPath.Row].Time;
+
+                return cell;
+            }
+
+            public override bool CanEditRow(UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+            {
+                // Return false if you do not want the specified item to be editable.
+                return false;
+            }
+        }
+
+
+        public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
+        {
+            if (segue.Identifier == "showReportDetail")
+            {
+                var indexPath = TableView.IndexPathForSelectedRow;
+                var item = dataSource.DailyReports[indexPath.Row];
+
+                ((ReportDetailViewController)segue.DestinationViewController).SetDailyReport(item);
             }
         }
 

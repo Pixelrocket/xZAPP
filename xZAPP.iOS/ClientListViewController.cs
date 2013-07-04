@@ -33,11 +33,8 @@ namespace xZAPP.iOS
         {
             base.ViewDidLoad();
 
-            // Perform any additional setup after loading the view, typically from a nib.
-            //NavigationItem.LeftBarButtonItem = EditButtonItem;
-
-            var addButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
-            NavigationItem.RightBarButtonItem = addButton;
+            var logoutButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
+            NavigationItem.RightBarButtonItem = logoutButton;
 
             //this.NavigationController.NavigationBar.Items[0].Title = "Logout"; //new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, null);
             this.NavigationItem.HidesBackButton = true;
@@ -46,8 +43,8 @@ namespace xZAPP.iOS
 
             // Call GetClientsAsync and set result as datasource, TaskScheduler must be used to update UI
             cl.GetClientsAsync(Token).ContinueWith(t => {
-                TableView.Source = dataSource = new DataSource(t.Result);
-                TableView.ReloadData();
+                ClientList.Source = dataSource = new DataSource(t.Result);
+                ClientList.ReloadData();
             },TaskScheduler.FromCurrentSynchronizationContext ());
         }
 
@@ -88,7 +85,10 @@ namespace xZAPP.iOS
             public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
             {
                 var cell = (UITableViewCell)tableView.DequeueReusableCell(CellIdentifier, indexPath);
-                cell.TextLabel.Text = clients[indexPath.Row].clientNameFormal;
+
+                cell.TextLabel.Text = clients[indexPath.Row].FormalName;
+                cell.DetailTextLabel.Text = "[" + clients[indexPath.Row].NumberOfDailyReports.ToString() + "]";
+
                 return cell;
             }
 

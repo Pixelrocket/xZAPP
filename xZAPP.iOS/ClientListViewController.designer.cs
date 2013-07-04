@@ -12,9 +12,16 @@ namespace xZAPP.iOS
 	[Register ("ClientListViewController")]
 	partial class ClientListViewController
 	{
+		[Outlet]
+		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
+		MonoTouch.UIKit.UITableView ClientList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ClientList != null) {
+				ClientList.Dispose ();
+				ClientList = null;
+			}
 		}
 	}
 }

@@ -8,12 +8,13 @@ namespace xZAPP.Core
 {
     public class Credentials : ICredentials
     {
-        public string firstName {get; set;}
-        public string lastName {get; set;}
-        public string infix {get; set;}
-        public string emailAddress {get; set;}
-        public long noOfClients {get; set;}
-        public string token {get; set;}
+        public string Firstname {get; set;}
+        public string Lastname {get; set;}
+        public string Infix {get; set;}
+        public string EmailAddress {get; set;}
+        [JsonProperty(PropertyName = "noofclients")]
+        public long NumberOfClients {get; set;}
+        public string Token {get; set;}
 
         public Credentials()
         {

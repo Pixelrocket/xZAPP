@@ -7,11 +7,15 @@ namespace xZAPP.Core
 {
     public class Client : IClient
     {
-        public long clientId {get; set;}
-        public string clientNameInformal {get; set;}
-        public string clientNameFormal {get; set;}
-        public long gender {get; set;}
-        public string photo { get; set; }
+        public long ClientId {get; set;}
+        [JsonProperty(PropertyName="clientNameInformal")]
+        public string InformalName {get; set;}
+        [JsonProperty(PropertyName="clientNameformal")]
+        public string FormalName {get; set;}
+        public long Gender {get; set;}
+        public string Photo { get; set; }
+        [JsonProperty(PropertyName="aantalDagRapportages")]
+        public long NumberOfDailyReports { get; set; }
 
         public Client()
         {

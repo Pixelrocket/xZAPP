@@ -12,9 +12,16 @@ namespace xZAPP.iOS
 	[Register ("ReportListViewController")]
 	partial class ReportListViewController
 	{
+		[Outlet]
+		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
+		MonoTouch.UIKit.UITableView ReportList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ReportList != null) {
+				ReportList.Dispose ();
+				ReportList = null;
+			}
 		}
 	}
 }

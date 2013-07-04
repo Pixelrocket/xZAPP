@@ -43,6 +43,8 @@ namespace xZAPP.Core
                         client.QueryString.Add("token", token);
                         break;
                     case ServiceURL.Reports:
+                        client.QueryString.Add("token", token);
+                        client.QueryString.Add("clientId", clientId.ToString());
                         break;
                     default:
                         break;
@@ -90,6 +92,8 @@ namespace xZAPP.Core
                         client.QueryString.Add("token", token);
                         break;
                     case ServiceURL.Reports:
+                        client.QueryString.Add("token", token);
+                        client.QueryString.Add("clientId", clientId.ToString());
                         break;
                     default:
                         break;

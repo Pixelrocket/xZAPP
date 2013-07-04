@@ -13,13 +13,7 @@ namespace xZAPP.iOS
 		public LoginViewController (IntPtr handle) : base (handle)
 		{
             Title = NSBundle.MainBundle.LocalizedString("Login", "Login");
-		}
-
-        //public ClientListViewController TableViewController
-        //{
-        //    get;
-        //    set;
-       // }
+		}           
 
         public override void DidReceiveMemoryWarning()
         {
@@ -72,13 +66,15 @@ namespace xZAPP.iOS
 
                     if(myCreds != null)
                     {
-                        ApplicationData.GetInstance.Token = myCreds.token;
+                        ApplicationData.GetInstance.Token = myCreds.Token;
                         this.PerformSegue("showClients", this);
                     }
                 }
                
-            } catch (WebException webEx) {
-                switch (((HttpWebResponse)webEx.Response).StatusCode) {
+            } 
+            catch (WebException webEx) {
+                switch (((HttpWebResponse)webEx.Response).StatusCode) 
+                {
                     case HttpStatusCode.Unauthorized:
                         this.lblMessage.Text = "Login gegevens onjuist of niet gevonden!";
                         break;
@@ -86,7 +82,8 @@ namespace xZAPP.iOS
                     break;
                 }
             }
-            catch {
+            catch 
+            {
             }
            
         }
@@ -99,8 +96,5 @@ namespace xZAPP.iOS
                 ((ClientListViewController)segue.DestinationViewController).SetToken(ApplicationData.GetInstance.Token);
             }
         }
-
-
-         
 	}
 }
