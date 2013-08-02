@@ -10,6 +10,7 @@ namespace xZAPP.iOS
 {
 	public partial class LoginViewController : UIViewController
 	{
+
 		public LoginViewController (IntPtr handle) : base (handle)
 		{
             Title = NSBundle.MainBundle.LocalizedString("Login", "Login");
@@ -34,67 +35,68 @@ namespace xZAPP.iOS
             Title = NSBundle.MainBundle.LocalizedString("Login", "Login");
         }
 
+
+
         partial void btnInloggen_TouchUpInside(UIButton sender)
+        {
+            GetCredentials();
+        }       
+
+
+        private void GetCredentials()
         {
             bool valid = true;
             this.lblMessage.Text = "";
-
-            try {
-
-                if ( this.txtUsername.Text.Length <= 0 ) {
+            try
+            {
+                if (this.txtUsername.Text.Length <= 0)
+                {
                     valid = false;
-                    InvokeOnMainThread ( () => {
+                    InvokeOnMainThread(() => 
+                                       {
                         this.txtUsername.Layer.BorderColor = UIColor.Red.CGColor;
                         this.txtUsername.Layer.BorderWidth = 3;
                         this.txtUsername.Layer.CornerRadius = 5;
                     });
-                };
-                if ( this.txtPassword.Text.Length <= 0 ) {
+                }
+                ;
+                if (this.txtPassword.Text.Length <= 0)
+                {
                     valid = false;
-                    InvokeOnMainThread ( () => {
+                    InvokeOnMainThread(() => 
+                                       {
                         this.txtPassword.Layer.BorderColor = UIColor.Red.CGColor;
                         this.txtPassword.Layer.BorderWidth = 3;
                         this.txtPassword.Layer.CornerRadius = 5;
                     });
-                };
-
-                if(valid)
+                }
+                ;
+                if (valid)
                 {
                     // CheckCredentials and show error or list with clients for logged in user.
                     Credentials cr = new Credentials();
                     Credentials myCreds = cr.CheckCredentials(this.txtUsername.Text, this.txtPassword.Text);
-
-                    if(myCreds != null)
+                    if (myCreds != null)
                     {
                         ApplicationData.GetInstance.Token = myCreds.Token;
-                        this.PerformSegue("showClients", this);
+                        this.PerformSegue("showClients", this); 
                     }
                 }
-               
-            } 
-            catch (WebException webEx) {
-                switch (((HttpWebResponse)webEx.Response).StatusCode) 
+            }
+            catch (WebException webEx)
+            {
+                switch (((HttpWebResponse)webEx.Response).StatusCode)
                 {
                     case HttpStatusCode.Unauthorized:
                         this.lblMessage.Text = "Login gegevens onjuist of niet gevonden!";
                         break;
                     default:
-                    break;
+                        break;
                 }
             }
-            catch 
+            catch
             {
             }
-           
         }
-
-
-        public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
-        {
-            if (segue.Identifier == "showClients")
-            {              
-                ((ClientListViewController)segue.DestinationViewController).SetToken(ApplicationData.GetInstance.Token);
-            }
-        }
-	}
+    }
 }

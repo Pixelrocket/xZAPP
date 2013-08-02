@@ -14,18 +14,18 @@ namespace xZAPP.iOS
 	{
 		[Outlet]
 		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
+		MonoTouch.UIKit.UIButton btnreact { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel ReportBy { get; set; }
 
 		[Outlet]
-		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
-		MonoTouch.UIKit.UITextField ReportContent { get; set; }
+		MonoTouch.UIKit.UIWebView ReportContent { get; set; }
 
 		[Outlet]
-		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
 		MonoTouch.UIKit.UILabel ReportDate { get; set; }
 
 		[Outlet]
-		[GeneratedCodeAttribute ("iOS Designer", "1.0")]
 		MonoTouch.UIKit.UILabel ReportSubject { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -33,6 +33,11 @@ namespace xZAPP.iOS
 			if (ReportBy != null) {
 				ReportBy.Dispose ();
 				ReportBy = null;
+			}
+
+			if (ReportContent != null) {
+				ReportContent.Dispose ();
+				ReportContent = null;
 			}
 
 			if (ReportDate != null) {
@@ -45,9 +50,9 @@ namespace xZAPP.iOS
 				ReportSubject = null;
 			}
 
-			if (ReportContent != null) {
-				ReportContent.Dispose ();
-				ReportContent = null;
+			if (btnreact != null) {
+				btnreact.Dispose ();
+				btnreact = null;
 			}
 		}
 	}

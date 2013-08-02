@@ -8,6 +8,7 @@ namespace xZAPP.Core
     {
         List<Client> GetClients(string token);
         Task<List<Client>> GetClientsAsync(string token);
+        Client ReadLatestClient();
+        void WriteLatestClient(Client client);
     }
 }
-

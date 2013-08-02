@@ -5,12 +5,17 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using xZAPP.Core;
 using System.Threading.Tasks;
+using System.Net;
+using System.IO;
+using System.Threading;
 
 namespace xZAPP.iOS
 {
     public partial class ClientListViewController : UITableViewController
     {
         DataSource dataSource;
+        Client latestClient;
+             
 
         public ClientListViewController(IntPtr handle) : base (handle)
         {
@@ -19,7 +24,7 @@ namespace xZAPP.iOS
         }
 
         public ReportListViewController ViewController{ get; set;}
-        public string Token{ get; set;}      
+
 
         public override void DidReceiveMemoryWarning()
         {
@@ -30,7 +35,7 @@ namespace xZAPP.iOS
         }
 
         public override void ViewDidLoad()
-        {
+        {      
             base.ViewDidLoad();
 
             var logoutButton = new UIBarButtonItem(UIBarButtonSystemItem.Stop, Logout);
@@ -39,28 +44,23 @@ namespace xZAPP.iOS
             //this.NavigationController.NavigationBar.Items[0].Title = "Logout"; //new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, null);
             this.NavigationItem.HidesBackButton = true;
 
-            Client cl = new Client();
 
-            // Call GetClientsAsync and set result as datasource, TaskScheduler must be used to update UI
-            cl.GetClientsAsync(Token).ContinueWith(t => {
-                ClientList.Source = dataSource = new DataSource(t.Result);
-                ClientList.ReloadData();
-            },TaskScheduler.FromCurrentSynchronizationContext ());
-        }
+            var cl = new Client();
+            latestClient = cl.ReadLatestClient();
+            GetClients();
+        }    
 
-        public void SetToken(string token)
-        {
-            Token = token;
-        }   
 
         class DataSource : UITableViewSource
         {
             static readonly NSString CellIdentifier = new NSString("DataSourceCell");
             List<Client> clients = new List<Client>();
+            ClientListViewController clientListView;
 
-            public DataSource(List<Client> cls)
+            public DataSource(List<Client> cls, ClientListViewController parent)
             {
                 clients = cls;
+                this.clientListView = parent;
             }
 
             public IList<Client> Clients
@@ -79,6 +79,12 @@ namespace xZAPP.iOS
             public override int RowsInSection(UITableView tableview, int section)
             {               
                 return clients == null ? 0 : clients.Count;
+            }
+
+            public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+            {                
+                clientListView.PerformSegue("showReports", this);
+                tableView.DeselectRow (indexPath, true); 
             }
 
             // Customize the appearance of table view cells.
@@ -104,16 +110,76 @@ namespace xZAPP.iOS
             if (segue.Identifier == "showReports")
             {
                 var indexPath = TableView.IndexPathForSelectedRow;
-                var item = dataSource.Clients[indexPath.Row];
+                if (indexPath != null)
+                {
+                    latestClient = dataSource.Clients[indexPath.Row];
+                }
 
-                ((ReportListViewController)segue.DestinationViewController).SetClient(item);
+                //Write clientid to file ...
+                latestClient.WriteLatestClient(latestClient);
+                
+                ((ReportListViewController)segue.DestinationViewController).SetClient(latestClient);
             }
         }
 
+
+
         private void Logout(object sender, EventArgs args)
         {       
-            this.PerformSegue("logoutFromClients", this);
+            //this.PerformSegue("logoutFromClients", this);
+            this.NavigationController.PopToRootViewController(true);
         }
+
+        private void GetClients()
+        {           
+            try
+            {
+                Client cl = new Client();   
+
+                cl.GetClientsAsync(ApplicationData.GetInstance.Token).ContinueWith(t => {
+                       
+                        List<Client> clients = t.Result;
+                        ClientList.Source = dataSource = new DataSource(clients, this);
+                        ClientList.ReloadData();
+
+                        if(ClientList.NumberOfRowsInSection(0) == 0)
+                        {
+                            UIAlertView alert = new UIAlertView("zAPP Melding", "Er zijn voor u geen cliënten beschikbaar.", null, "Ok", null);
+                            alert.Show();
+                        }
+
+                        // select latest client
+                        Client lcl = cl.ReadLatestClient();
+                        if(lcl != null)
+                        {
+                            var index = clients.FindIndex(c => c.ClientId == lcl.ClientId);
+                            NSIndexPath path = NSIndexPath.FromRowSection(index, 0);
+                            ClientList.SelectRow(path, false, UITableViewScrollPosition.None);
+           
+                            //dataSource.RowSelected(ClientList, path);
+                            //this.PerformSegue("showReports", this);    
+
+                        }
+
+                },TaskScheduler.FromCurrentSynchronizationContext());
+                     
+            }
+
+            catch (WebException webEx)
+            {
+                switch (((HttpWebResponse)webEx.Response).StatusCode)
+                {
+                    case HttpStatusCode.Unauthorized:
+                        this.PerformSegue("logoutFromClients", this);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+            }
+        }       
     }
 }
 

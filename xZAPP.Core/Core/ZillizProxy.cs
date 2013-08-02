@@ -15,12 +15,14 @@ namespace xZAPP.Core
 
         public enum ServiceURL
         {
-            [Description("https://www.greenhillhost.nl/ws_zapp/getClients/index.cfm")]
+            [Description("https://www.greenhillhost.nl/ws_zapp/clients/index.cfm")]
             Clients,
-            [Description("https://www.greenhillhost.nl/ws_zapp/getCredentials/index.cfm")]
+            [Description("https://www.greenhillhost.nl/ws_zapp/sessions/index.cfm")]
             Credentials,
-            [Description("https://www.greenhillhost.nl/ws_zapp/getDailyReports/index.cfm")]
-            Reports
+            [Description("https://www.greenhillhost.nl/ws_zapp/dailyReports/index.cfm")]
+            Reports,
+            [Description("https://www.greenhillhost.nl/ws_zapp/reactions/index.cfm")]
+            Comments
         }
  
         public ZillizProxy()
@@ -28,29 +30,23 @@ namespace xZAPP.Core
         }
        
         // Synchronous call to Webservice and retreive JSON data
-        public string GetJSON(ServiceURL wsUrl, string username = null, string password = null, string token = null, long clientId = -1)
+        public string GetJSON(ServiceURL wsUrl, string username = null, string password = null, string token = null, string wsAction = "POST", long clientId = -1)
         {
+            var uploadstring = "";
             var client = new WebClient();
 
             try
             {
-                switch (wsUrl) {
-                    case ServiceURL.Credentials:
-                        client.QueryString.Add("frmUsername", username);
-                        client.QueryString.Add("frmPassword", password);
-                        break;
-                    case ServiceURL.Clients:
-                        client.QueryString.Add("token", token);
-                        break;
-                    case ServiceURL.Reports:
-                        client.QueryString.Add("token", token);
-                        client.QueryString.Add("clientId", clientId.ToString());
-                        break;
-                    default:
-                        break;
+                var content = "";
+                if(wsAction == "POST"){
+                    client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    uploadstring = GetUploadString(wsUrl, username, password, token, clientId);
+                    content = client.UploadString(EnumExtensions.GetDescription<ServiceURL>(wsUrl), uploadstring);
                 }
-
-                var content = client.DownloadString(EnumExtensions.GetDescription<ServiceURL>(wsUrl));  
+                else{
+                    GetQueryString(client, wsUrl, username, password, token, clientId);
+                    content = client.DownloadString(EnumExtensions.GetDescription<ServiceURL>(wsUrl));
+                }
 
                 if(string.IsNullOrWhiteSpace(content)) {
                     Console.Out.WriteLine("Response contained empty body...");
@@ -76,31 +72,29 @@ namespace xZAPP.Core
             return "";
         }
 
+
+
         // ASynchronous call to Webservice and retreive JSON data
-        public async Task<string> GetJSONAsync(ServiceURL wsUrl, string username = null, string password = null, string token = null, long clientId = -1)
+        public async Task<string> GetJSONAsync(ServiceURL wsUrl, string username = null, string password = null, string token = null, string wsAction = "POST", long clientId = -1)
         {
+         
+            var uploadstring = "";
             var client = new WebClient();
+            client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
 
             try
             {
-                switch (wsUrl) {
-                    case ServiceURL.Credentials:
-                        client.QueryString.Add("frmUsername", username);
-                        client.QueryString.Add("frmPassword", password);
-                        break;
-                    case ServiceURL.Clients:
-                        client.QueryString.Add("token", token);
-                        break;
-                    case ServiceURL.Reports:
-                        client.QueryString.Add("token", token);
-                        client.QueryString.Add("clientId", clientId.ToString());
-                        break;
-                    default:
-                        break;
-                }
 
-                // Read the results from de Webservice call
-                var content = client.DownloadStringTaskAsync(EnumExtensions.GetDescription<ServiceURL>(wsUrl));
+                Task<string> content;
+                if(wsAction == "POST"){
+                    client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    uploadstring = GetUploadString(wsUrl, username, password, token, clientId);
+                    content = client.UploadStringTaskAsync(EnumExtensions.GetDescription<ServiceURL>(wsUrl), uploadstring);
+                }
+                else{
+                    GetQueryString(client, wsUrl, username, password, token, clientId);
+                    content = client.DownloadStringTaskAsync(EnumExtensions.GetDescription<ServiceURL>(wsUrl));
+                }
 
                 if(string.IsNullOrWhiteSpace(await content)) {
                     Console.Out.WriteLine("Response contained empty body...");
@@ -126,7 +120,51 @@ namespace xZAPP.Core
             {
                 client.Dispose();
             }
-        }   
+        }  
+
+
+
+        private string GetUploadString(ServiceURL wsUrl, string username, string password, string token, long clientId)
+        {
+            var uploadstring = "";
+
+            switch (wsUrl)
+            {
+                case ServiceURL.Credentials:                   
+                    uploadstring = "username=" + username + "&password=" + password;
+                    break;
+                case ServiceURL.Clients:
+                    uploadstring = "token=" + token;
+                    break;
+                case ServiceURL.Reports:               
+                    uploadstring = "token=" + token + "&clientid=" + clientId.ToString() + "&maxrows=1000";
+                    break;
+                default:
+                    break;
+            }
+            return uploadstring;
+        }
+
+        private void GetQueryString(WebClient wc, ServiceURL wsUrl, string username, string password, string token, long clientId)
+        {
+          switch (wsUrl)
+            {
+                case ServiceURL.Credentials:                   
+                    wc.QueryString.Add("username" , username);
+                    wc.QueryString.Add("password" , password);
+                    break;
+                case ServiceURL.Clients:
+                    wc.QueryString.Add("token" , token);
+                    break;
+                case ServiceURL.Reports:       
+                    wc.QueryString.Add("token" , token);
+                    wc.QueryString.Add("clientid" , clientId.ToString());
+                    wc.QueryString.Add("maxrows" , "1000");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 

@@ -35,7 +35,7 @@ namespace xZAPP.Core
         public List<DailyReport> GetDailyReports(string token, long clientId)
         {
             ZillizProxy clProxy = new ZillizProxy();
-            List<DailyReport> reports =  JsonConvert.DeserializeObject<List<DailyReport>>(clProxy.GetJSON(ZillizProxy.ServiceURL.Reports, token:token, clientId: clientId));
+            List<DailyReport> reports =  JsonConvert.DeserializeObject<List<DailyReport>>(clProxy.GetJSON(ZillizProxy.ServiceURL.Reports, token:token, clientId: clientId, wsAction: "GET"));
 
             //return reports.FindAll(rep => rep.FolderId == 744);
             return reports;
@@ -48,7 +48,7 @@ namespace xZAPP.Core
             ZillizProxy clProxy = new ZillizProxy();          
 
             // Call async proxy and use returned JSON string
-            string jsonClients = await clProxy.GetJSONAsync(ZillizProxy.ServiceURL.Reports, token:token, clientId: clientId);
+            string jsonClients = await clProxy.GetJSONAsync(ZillizProxy.ServiceURL.Reports, token:token, clientId: clientId, wsAction: "GET");
             reports = JsonConvert.DeserializeObject<List<DailyReport>>(jsonClients);
 
             //return reports.FindAll(rep => rep.FolderId == 744);
